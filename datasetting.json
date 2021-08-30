@@ -1,0 +1,53 @@
+ {  
+    "iterationСonst":200,
+    "figParamForRandom": [
+        {
+            "frequencyX": 14,
+            "frequencyY": 14,
+            "phaseShiftX": {
+                "randomRange": 4,
+                "coefficient": 0.785
+            },
+            "phaseShiftY": {
+                "randomRange": 4,
+                "coefficient": 0.785
+            }
+        },
+        {
+            "frequencyX": 49,
+            "frequencyY": 49,
+            "phaseShiftX": {
+                "randomRange": 6280,
+                "coefficient": 1000
+            },
+            "phaseShiftY": {
+                "randomRange": 6280,
+                "coefficient": 1000
+            }
+        },
+        {
+            "frequencyX": 49,
+            "frequencyY": 14,
+            "phaseShiftX": {
+                "randomRange": 6280,
+                "coefficient": 1000
+            },
+            "phaseShiftY": {
+                "randomRange": 4,
+                "coefficient": 0.785
+            }
+        },
+        {
+            "frequencyX": 14,
+            "frequencyY": 49,
+            "phaseShiftX": {
+                "randomRange": 4,
+                "coefficient": 0.785
+            },
+            "phaseShiftY": {
+                "randomRange": 6280,
+                "coefficient": 1000
+            }
+        }        
+    ]
+}
