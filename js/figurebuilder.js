@@ -1,19 +1,35 @@
-const figureEl = document.querySelector('.figure');
 
+
+
+//Визначення ширини екрану та побудова поля SVG для фігури
+const figuresContainerEl = document.querySelector('.figures-container');
+let getAreaWidth = window.innerWidth * 0.4; //отримання розміру поля для фігури по ширині вьюпорта
+const makeAreaSvg = (data,colour) => { //Побудова поля для фігури
+    figuresContainerEl.insertAdjacentHTML('afterbegin', `<svg width="${getAreaWidth}" height="${getAreaWidth}" style="outline: 4px solid #000000;" class="figure"></svg>`);
+    figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="4" />`);
+}
+
+console.log(getAreaWidth);
+
+makeAreaSvg("0,0 1,1","transparent");
+
+
+
+// const figureEl = document.querySelector('.figure');
 
 
 
 const figureData = {
-    frequencyX: 60, //Частота коливань по осі X
-    frequencyY: 80, //Частота коливань по осі Y
-    phaseShiftX: 1, //Зсув фаз по осі X
-    phaseShiftY: 1, //Зсув фаз по осі Y
+    frequencyX: 1, //Частота коливань по осі X
+    frequencyY: 3, //Частота коливань по осі Y
+    phaseShiftX: 0, //Зсув фаз по осі X
+    phaseShiftY: 0.785, //Зсув фаз по осі Y
     iterationСonst: 200,
     numberOfIterations: function () { //метод для розрахунку числа ітерацій
         return  this.iterationСonst * this.frequencyX + this.iterationСonst * this.frequencyY;     
     },
     iterationStep: function () { //метод для розрахунку кроку ітерації
-        return Math.PI / this.numberOfIterations();
+        return 2 * Math.PI / this.numberOfIterations();
     },
     frequency: function () { //функція для оптимізації частоти коливань по осі X та У, щоб фігура не будувалася декілька разів підряд.
         let counter; /*Кількість циклів*/
@@ -28,21 +44,33 @@ const figureData = {
                 this.frequencyX = this.frequencyX / i;
             }
         }
-    },
-    
-    
+    },   
 }
 
 figureData.frequency(); //Виконання вбудованої функції по оптимізації даних
 
-const makeFigure = () => {
-    сщтіе
+//Функція для визначення координати точки, на яку діють коливання
+function getСoordinatePoint(t,w,fi) {
+    return Math.round(getAreaWidth/2 + getAreaWidth/2 * 0.7 * Math.cos(w * t + fi));
+}
+ 
+
+const calculateFigurePoints = () => {
+    let figureDataString = "";
+    let oscillationTime = 0;
+    const h = figureData.iterationStep();
+    for (let i = 1; i <= figureData.numberOfIterations(); i += 1) {
+        figureDataString += `${getСoordinatePoint(oscillationTime, figureData.frequencyX, figureData.phaseShiftX)},${getСoordinatePoint(oscillationTime, figureData.frequencyY, figureData.phaseShiftY)} `;
+        oscillationTime += h;
+    }
+    figuresContainerEl.removeChild(figuresContainerEl.firstElementChild)
+    makeAreaSvg(figureDataString,"#000000");
+
+    console.log(figureDataString);
 }
 
+calculateFigurePoints();
 
-
-
-console.log(figureData.frequencyY);
 
 
 
