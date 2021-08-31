@@ -53,9 +53,16 @@ figureData.frequency(); //Виконання вбудованої функції
 function getСoordinatePoint(t,w,fi) {
     return Math.round(getAreaWidth/2 + getAreaWidth/2 * 0.7 * Math.cos(w * t + fi));
 }
- 
 
-const calculateFigurePoints = () => {
+const colorGeneration = () => { //Функція для оримання рандомного кольору в hex форматі
+    let color = "#";
+    for (let i = 1; i <= 6; i += 1) {
+        color += Math.round(Math.random() * 15).toString(16);
+    }
+    return color;
+}
+
+const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу
     let figureDataString = "";
     let oscillationTime = 0;
     const h = figureData.iterationStep();
@@ -64,13 +71,14 @@ const calculateFigurePoints = () => {
         oscillationTime += h;
     }
     figuresContainerEl.removeChild(figuresContainerEl.firstElementChild)
-    makeAreaSvg(figureDataString,"#000000");
+    makeAreaSvg(figureDataString,colorGeneration());
 
-    console.log(figureDataString);
 }
 
 calculateFigurePoints();
 
 
 
-
+const d = 10;
+console.log(d.toString(16));
+// console.log(colorGeneration());
