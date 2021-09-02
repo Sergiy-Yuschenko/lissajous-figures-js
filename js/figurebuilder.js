@@ -1,12 +1,66 @@
 
+const datasetting =  {  
+    iterationСonst: 200,
+    figParamForRandom: [
+        {
+            frequencyX: 14,
+            frequencyY: 14,
+            phaseShiftX: {
+                randomRange: 4,
+                coefficient: 0.785,
+            },
+            phaseShiftY: {
+               randomRange: 4,
+                coefficient: 0.785,
+            }
+        },
+        {
+            frequencyX: 49,
+            frequencyY: 49,
+            phaseShiftX: {
+                randomRange: 6280,
+                coefficient: 0.001,
+            },
+            phaseShiftY: {
+                randomRange: 6280,
+                coefficient: 0.001,
+            },
+        },
+        {
+            frequencyX: 49,
+            frequencyY: 14,
+            phaseShiftX: {
+                randomRange: 6280,
+                coefficient: 0.001,
+            },
+            phaseShiftY: {
+                randomRange: 4,
+                coefficient: 0.785,
+            }
+        },
+        {
+            frequencyX: 14,
+            frequencyY: 49,
+            phaseShiftX: {
+                randomRange: 4,
+                coefficient: 0.785,
+            },
+            phaseShiftY: {
+                randomRange: 6280,
+                coefficient: 0.001,
+            },
+        },        
+    ],
+}
 
+console.log(datasetting.figParamForRandom);
 
 //Визначення ширини екрану та побудова поля SVG для фігури
 const figuresContainerEl = document.querySelector('.figures-container');
 let getAreaWidth = window.innerWidth * 0.4; //отримання розміру поля для фігури по ширині вьюпорта
 const makeAreaSvg = (data,colour) => { //Побудова поля для фігури
     figuresContainerEl.insertAdjacentHTML('afterbegin', `<svg width="${getAreaWidth}" height="${getAreaWidth}" style="outline: 4px solid #000000;" class="figure"></svg>`);
-    figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="4" />`);
+    figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="3" />`);
 }
 
 console.log(getAreaWidth);
@@ -24,7 +78,7 @@ const figureData = {
     frequencyY: 3, //Частота коливань по осі Y
     phaseShiftX: 0, //Зсув фаз по осі X
     phaseShiftY: 0.785, //Зсув фаз по осі Y
-    iterationСonst: 200,
+    iterationСonst: datasetting.iterationСonst,
     numberOfIterations: function () { //метод для розрахунку числа ітерацій
         return  this.iterationСonst * this.frequencyX + this.iterationСonst * this.frequencyY;     
     },
@@ -61,6 +115,17 @@ const colorGeneration = () => { //Функція для оримання ран�
     }
     return color;
 }
+        
+
+const generateData = (data) => { //Функція для вибору рандомних параметрів фігури
+    const k = Math.round(Math.random() * 3);
+    figureData.frequencyX = Math.round(Math.random() * data[k].frequencyX);
+    figureData.frequencyY = Math.round(Math.random() * data[k].frequencyY);
+    figureData.phaseShiftX = Math.round(Math.random() * data[k].phaseShiftX.randomRange) * data[k].phaseShiftX.coefficient;
+    figureData.phaseShiftY = Math.round(Math.random() * data[k].phaseShiftY.randomRange) * data[k].phaseShiftY.coefficient;
+}
+
+generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
 
 const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу
     let figureDataString = "";
