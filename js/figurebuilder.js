@@ -57,10 +57,10 @@ console.log(datasetting.figParamForRandom);
 
 //Визначення ширини екрану та побудова поля SVG для фігури
 const figuresContainerEl = document.querySelector('.figures-container');
-let getAreaWidth = window.innerWidth * 0.4; //отримання розміру поля для фігури по ширині вьюпорта
+let getAreaWidth = window.innerWidth * 0.5; //отримання розміру поля для фігури по ширині вьюпорта
 const makeAreaSvg = (data,colour) => { //Побудова поля для фігури
     figuresContainerEl.insertAdjacentHTML('afterbegin', `<svg width="${getAreaWidth}" height="${getAreaWidth}" style="outline: 4px solid #000000;" class="figure"></svg>`);
-    figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="3" />`);
+    figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="2" />`);
 }
 
 console.log(getAreaWidth);
@@ -105,7 +105,7 @@ figureData.frequency(); //Виконання вбудованої функції
 
 //Функція для визначення координати точки, на яку діють коливання
 function getСoordinatePoint(t,w,fi) {
-    return Math.round(getAreaWidth/2 + getAreaWidth/2 * 0.85 * Math.cos(w * t + fi));
+    return Math.round((getAreaWidth/2 + getAreaWidth/2 * 0.85 * Math.cos(w * t + fi)) * 100) / 100;
 }
 
 const colorGeneration = () => { //Функція для оримання рандомного кольору в hex форматі
@@ -121,13 +121,19 @@ const generateData = (data) => { //Функція для вибору рандо
     const k = Math.round(Math.random() * 3);
     figureData.frequencyX = Math.round(Math.random() * data[k].frequencyX) + 1;
     figureData.frequencyY = Math.round(Math.random() * data[k].frequencyY) + 1;
-    figureData.phaseShiftX = (Math.round(Math.random() * data[k].phaseShiftX.randomRange) +1 ) * data[k].phaseShiftX.coefficient;;
-    figureData.phaseShiftY = (Math.round(Math.random() * data[k].phaseShiftY.randomRange) +1 ) * data[k].phaseShiftY.coefficient;;
+    figureData.phaseShiftX = Math.round((Math.round(Math.random() * data[k].phaseShiftX.randomRange) +1 ) * data[k].phaseShiftX.coefficient * 1000) / 1000;
+    figureData.phaseShiftY = Math.round((Math.round(Math.random() * data[k].phaseShiftY.randomRange) +1 ) * data[k].phaseShiftY.coefficient * 1000) / 1000;
 }
 
 generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
 
-const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу
+
+
+const parameterListEl = document.querySelector('.parameter-list');
+
+
+
+const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу та виведення параметрів
     let figureDataString = "";
     let oscillationTime = 0;
     const h = figureData.iterationStep();
@@ -137,7 +143,10 @@ const calculateFigurePoints = () => { //Функція для побудови �
     }
     figuresContainerEl.removeChild(figuresContainerEl.firstElementChild)
     makeAreaSvg(figureDataString,colorGeneration());
-
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wx = ${figureData.frequencyX} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wy = ${figureData.frequencyY} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">&#8509x; = ${figureData.phaseShiftX} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend',`<li class="parameter-list__list-item">&#8509y; = ${figureData.phaseShiftY} не спрощує частоти до кінця!!!</li>`);
 }
 
 calculateFigurePoints();

@@ -20,13 +20,13 @@ h2 {
   margin: 0;
 }
 
-#date-selector.invalid {
-  border-color: #f44336;
-}
-//
 ul {
   margin: 0;
   padding: 0;
+}
+
+#date-selector.invalid {
+  border-color: #f44336;
 }
 
 .form {
@@ -52,4 +52,13 @@ ul {
 
 .figure {
     margin: 50px auto;
+}
+
+.parameter-list {
+  display: flex;
+  margin: 0 auto;
+}
+
+.parameter-list__list-item:not(:last-child) {
+  margin-right: 35px;
 }
