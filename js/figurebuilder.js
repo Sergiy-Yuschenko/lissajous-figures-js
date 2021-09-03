@@ -6,11 +6,11 @@ const datasetting =  {
             frequencyX: 14,
             frequencyY: 14,
             phaseShiftX: {
-                randomRange: 4,
+                randomRange: 3,
                 coefficient: 0.785,
             },
             phaseShiftY: {
-               randomRange: 4,
+               randomRange: 3,
                 coefficient: 0.785,
             }
         },
@@ -18,11 +18,11 @@ const datasetting =  {
             frequencyX: 49,
             frequencyY: 49,
             phaseShiftX: {
-                randomRange: 6280,
+                randomRange: 6279,
                 coefficient: 0.001,
             },
             phaseShiftY: {
-                randomRange: 6280,
+                randomRange: 6279,
                 coefficient: 0.001,
             },
         },
@@ -30,11 +30,11 @@ const datasetting =  {
             frequencyX: 49,
             frequencyY: 14,
             phaseShiftX: {
-                randomRange: 6280,
+                randomRange: 6279,
                 coefficient: 0.001,
             },
             phaseShiftY: {
-                randomRange: 4,
+                randomRange: 3,
                 coefficient: 0.785,
             }
         },
@@ -42,11 +42,11 @@ const datasetting =  {
             frequencyX: 14,
             frequencyY: 49,
             phaseShiftX: {
-                randomRange: 4,
+                randomRange: 3,
                 coefficient: 0.785,
             },
             phaseShiftY: {
-                randomRange: 6280,
+                randomRange: 6279,
                 coefficient: 0.001,
             },
         },        
@@ -105,7 +105,7 @@ figureData.frequency(); //Виконання вбудованої функції
 
 //Функція для визначення координати точки, на яку діють коливання
 function getСoordinatePoint(t,w,fi) {
-    return Math.round(getAreaWidth/2 + getAreaWidth/2 * 0.7 * Math.cos(w * t + fi));
+    return Math.round(getAreaWidth/2 + getAreaWidth/2 * 0.85 * Math.cos(w * t + fi));
 }
 
 const colorGeneration = () => { //Функція для оримання рандомного кольору в hex форматі
@@ -119,10 +119,10 @@ const colorGeneration = () => { //Функція для оримання ран�
 
 const generateData = (data) => { //Функція для вибору рандомних параметрів фігури
     const k = Math.round(Math.random() * 3);
-    figureData.frequencyX = Math.round(Math.random() * data[k].frequencyX);
-    figureData.frequencyY = Math.round(Math.random() * data[k].frequencyY);
-    figureData.phaseShiftX = Math.round(Math.random() * data[k].phaseShiftX.randomRange) * data[k].phaseShiftX.coefficient;
-    figureData.phaseShiftY = Math.round(Math.random() * data[k].phaseShiftY.randomRange) * data[k].phaseShiftY.coefficient;
+    figureData.frequencyX = Math.round(Math.random() * data[k].frequencyX) + 1;
+    figureData.frequencyY = Math.round(Math.random() * data[k].frequencyY) + 1;
+    figureData.phaseShiftX = (Math.round(Math.random() * data[k].phaseShiftX.randomRange) +1 ) * data[k].phaseShiftX.coefficient;;
+    figureData.phaseShiftY = (Math.round(Math.random() * data[k].phaseShiftY.randomRange) +1 ) * data[k].phaseShiftY.coefficient;;
 }
 
 generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
