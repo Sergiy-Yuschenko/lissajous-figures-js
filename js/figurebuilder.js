@@ -1,5 +1,9 @@
 
-const datasetting =  {  
+
+
+// ----------ДАНІ ДЛЯ ВИБОРУ СХЕМ РАНДОМНОГО ПІДБОРУ ПАРАМЕТРІВ ФІГУРИ ТА ЇЇ ПОБУДОВИ
+
+const datasetting = {
     iterationСonst: 200,
     figParamForRandom: [
         {
@@ -53,31 +57,25 @@ const datasetting =  {
     ],
 }
 
-console.log(datasetting.figParamForRandom);
-
-//Визначення ширини екрану та побудова поля SVG для фігури
+//--------ВИЗНАЧЕННЯ ШИРИНИ ЕКРАНУ ТА ПОБУДОВА ПОЛЯ SVG ДЛЯ ФІГУРИ
 const figuresContainerEl = document.querySelector('.figures-container');
 let getAreaWidth = window.innerWidth * 0.5; //отримання розміру поля для фігури по ширині вьюпорта
-const makeAreaSvg = (data,colour) => { //Побудова поля для фігури
+const makeAreaSvg = (data,colour) => { //Функція для побудови поля для фігури
     figuresContainerEl.insertAdjacentHTML('afterbegin', `<svg width="${getAreaWidth}" height="${getAreaWidth}" style="outline: 4px solid #000000;" class="figure"></svg>`);
     figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="2" />`);
 }
 
-console.log(getAreaWidth);
 
-makeAreaSvg("0,0 1,1","transparent");
+makeAreaSvg("0,0 1,1", "transparent"); //Виконання функції для побудови поля для фігури
 
-
-
-// const figureEl = document.querySelector('.figure');
-
-
+/*------ОБ'ЄКТ ДЛЯ ПРИЙОМУ ТА ПОТОЧНОГО ЗБЕРІГАННЯ ПАРАМЕТРІВ ФІГУРИ, ПАРАМЕТРІВ ЇЇ ПОБУДОВИ
+        ТА ДЕЯКИХ МЕТОДІВ ДЛЯ ЇХ ОБРОБКИ ---------*/
 
 const figureData = {
-    frequencyX: 1, //Частота коливань по осі X
-    frequencyY: 3, //Частота коливань по осі Y
+    frequencyX: 0, //Частота коливань по осі X
+    frequencyY: 0, //Частота коливань по осі Y
     phaseShiftX: 0, //Зсув фаз по осі X
-    phaseShiftY: 0.785, //Зсув фаз по осі Y
+    phaseShiftY: 0, //Зсув фаз по осі Y
     iterationСonst: datasetting.iterationСonst,
     numberOfIterations: function () { //метод для розрахунку числа ітерацій
         return  this.iterationСonst * this.frequencyX + this.iterationСonst * this.frequencyY;     
@@ -87,22 +85,23 @@ const figureData = {
     },
     frequency: function () { //функція для оптимізації частоти коливань по осі X та У, щоб фігура не будувалася декілька разів підряд.
         let counter; /*Кількість циклів*/
-        if (this.frequencyX >= this.frequencyY) {
-            counter = this.frequencyY;
-        } else {
-            counter = this.frequencyX;
-        }
-        for (let i = counter; i > 1; i -= 1) {
-            if (this.frequencyX % i === 0 && this.frequencyY % i === 0) {
-                this.frequencyY = this.frequencyY / i;
-                this.frequencyX = this.frequencyX / i;
+        // for (let i = 1; i <= 100; i +=1) { 
+            if (this.frequencyX >= this.frequencyY) {
+                counter = this.frequencyY;
+            } else {
+                counter = this.frequencyX;
             }
-        }
+            for (let i = counter; i >= 2; i -= 1) {
+                if (this.frequencyX % i === 0 && this.frequencyY % i === 0) {
+                    this.frequencyY = this.frequencyY / i;
+                    this.frequencyX = this.frequencyX / i;
+                }
+            }
+        // }
     },   
 }
 
-figureData.frequency(); //Виконання вбудованої функції по оптимізації даних
-
+/*-------------------ФУНКЦІЇ ПОТРІБНІ ДЛЯ ПЕРЕДПІДГОТОВКИ ТА ПОБУДОВИ ФІГУРИ----------*/
 //Функція для визначення координати точки, на яку діють коливання
 function getСoordinatePoint(t,w,fi) {
     return Math.round((getAreaWidth/2 + getAreaWidth/2 * 0.85 * Math.cos(w * t + fi)) * 100) / 100;
@@ -116,7 +115,6 @@ const colorGeneration = () => { //Функція для оримання ран�
     return color;
 }
         
-
 const generateData = (data) => { //Функція для вибору рандомних параметрів фігури
     const k = Math.round(Math.random() * 3);
     figureData.frequencyX = Math.round(Math.random() * data[k].frequencyX) + 1;
@@ -125,15 +123,20 @@ const generateData = (data) => { //Функція для вибору рандо
     figureData.phaseShiftY = Math.round((Math.round(Math.random() * data[k].phaseShiftY.randomRange) +1 ) * data[k].phaseShiftY.coefficient * 1000) / 1000;
 }
 
-generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
+/*------------------СТВОРЕННЯ ЕЛЕМЕНТІВ ДЛЯ ВИВОДУ ДАНИХ---------------*/
+    const parameterListEl = document.querySelector('.parameter-list');
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wx = ${figureData.frequencyX} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wy = ${figureData.frequencyY} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">&#8509x; = ${figureData.phaseShiftX} ;</li>`);
+    parameterListEl.insertAdjacentHTML('beforeend',`<li class="parameter-list__list-item">&#8509y; = ${figureData.phaseShiftY}</li>`);
 
 
 
-const parameterListEl = document.querySelector('.parameter-list');
-
-
+/*------------ПОБУДОВА РАНДОМНОЇ ФІГУРИ (МЕТОД 1)-------------*/
 
 const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу та виведення параметрів
+    generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
+    figureData.frequency(); //Виконання вбудованої функції по оптимізації даних
     let figureDataString = "";
     let oscillationTime = 0;
     const h = figureData.iterationStep();
@@ -143,16 +146,45 @@ const calculateFigurePoints = () => { //Функція для побудови �
     }
     figuresContainerEl.removeChild(figuresContainerEl.firstElementChild)
     makeAreaSvg(figureDataString,colorGeneration());
-    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wx = ${figureData.frequencyX} ;</li>`);
-    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">wy = ${figureData.frequencyY} ;</li>`);
-    parameterListEl.insertAdjacentHTML('beforeend', `<li class="parameter-list__list-item">&#8509x; = ${figureData.phaseShiftX} ;</li>`);
-    parameterListEl.insertAdjacentHTML('beforeend',`<li class="parameter-list__list-item">&#8509y; = ${figureData.phaseShiftY} не спрощує частоти до кінця!!!</li>`);
+    parameterListEl.firstElementChild.textContent =`wx = ${figureData.frequencyX} ;`;
+    parameterListEl.firstElementChild.nextElementSibling.textContent =`wy = ${figureData.frequencyY} ;`;
+    parameterListEl.lastElementChild.previousElementSibling.textContent =`ℽx; = ${figureData.phaseShiftX} ;`;
+    parameterListEl.lastElementChild.textContent =`ℽy; = ${figureData.phaseShiftY}`;
 }
 
-calculateFigurePoints();
+
+// calculateFigurePoints();
 
 
+/*------------ПОБУДОВА ЗАДАНОЇ ФІГУРИ (МЕТОД 2)-------------*/
 
-const d = 10;
-console.log(d.toString(16));
-// console.log(colorGeneration());
+
+/*------------------ВИБІР МЕТОДУ------------------*/
+
+const chooseFirstMethodEl = document.querySelector('.choose-first-method'); //Знаходимо радіо-кнопку першого методу
+const chooseSecondMethodEl = document.querySelector('.choose-second-method'); //Знаходимо радіо-кнопку другого методу
+const firstMethodEl = document.querySelector('.form__method.first');
+const secondMethodEl = document.querySelector('.form__method.second');
+const buttonEl = document.querySelector('.form__button');
+
+
+const chooseFirstMethod = () => {
+    if (firstMethodEl.classList.contains('hidden')) {
+        firstMethodEl.classList.remove('hidden');
+    }
+    secondMethodEl.classList.add('hidden');
+    buttonEl.addEventListener('click', calculateFigurePoints);
+}
+//Виконуємо цю функцію перший раз
+chooseFirstMethod();
+
+chooseFirstMethodEl.addEventListener('change', chooseFirstMethod);
+
+const chooseSecondMethod = () => {
+    if (secondMethodEl.classList.contains('hidden')) {
+        secondMethodEl.classList.remove('hidden');
+    }
+    firstMethodEl.classList.add('hidden');
+}
+
+chooseSecondMethodEl.addEventListener('change', chooseSecondMethod);

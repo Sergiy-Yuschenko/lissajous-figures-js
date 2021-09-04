@@ -8,22 +8,26 @@
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <h1>Фігури Лісажю</h1>
+    <h1 class="header">Фігури Лісажю</h1>
     <form class="form">
-        <div class="form__method">
-            <label class="form__method-choice">
+        <div class="form__metod-choice">
+            <label class="form__method-choice" >
                 метод 1
-                <input type="radio" name="method" checked>
+                <input type="radio" name="method" checked class="choose-first-method">
             </label>
-            <button type="button">
+            <label>
+                метод 2
+                <input type="radio" name="method" class="choose-second-method">
+            </label>
+        </div>
+        <p class="method-description">Побудова випадкової фігури</p>
+        <div class="form__method first">
+
+            <button type="button" class="form__button">
                 побудувати фігуру
             </button>
         </div>
-        <div class="form__method">
-            <label>
-                метод 2
-                <input type="radio" name="method">
-            </label>
+        <div class="form__method second hidden" >
             <p>1&#x29; введіть частоту коливань</p>
             <label>
                 по осі X:
@@ -42,12 +46,12 @@
                 по осі Y:
                 <input type="number" value="1" min="1" max="200">
             </label>
-            <button type="button">
+            <button type="button" class="form__button">
                 побудувати фігуру
             </button>
         </div>
     </form>
-    <ul class="parameter-list"></ul>
+    <ul class="parameter-list list"></ul>
     <div class="figures-container">
     </div>
     <script src="js/figurebuilder.js" type="module"></script>
