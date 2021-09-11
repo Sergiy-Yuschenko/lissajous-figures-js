@@ -5,6 +5,7 @@
 
 const datasetting = {
     iterationСonst: 200,
+    figureColor: '#000000',
     figParamForRandom: [
         {
             frequencyX: 14,
@@ -132,20 +133,19 @@ const generateData = (data) => { //Функція для вибору рандо
 
 
 
-/*------------ПОБУДОВА РАНДОМНОЇ ФІГУРИ (МЕТОД 1)-------------*/
+/*------------фУНКЦІЯ ДЛЯ ПОБУДОВИ ФІГУРИ ЗА ДАНИМИ З ОБ'ЄКТУ figureData-------------*/
 
-const calculateFigurePoints = () => { //Функція для побудови фігури Лісажу та виведення параметрів
-    generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
-    figureData.frequency(); //Виконання вбудованої функції по оптимізації даних
-    let figureDataString = "";
-    let oscillationTime = 0;
-    const h = figureData.iterationStep();
-    for (let i = 1; i <= figureData.numberOfIterations(); i += 1) {
-        figureDataString += `${getСoordinatePoint(oscillationTime, figureData.frequencyX, figureData.phaseShiftX)},${getСoordinatePoint(oscillationTime, figureData.frequencyY, figureData.phaseShiftY)} `;
-        oscillationTime += h;
+const calculateFigurePoints = () => { //Функція для розрахунку точок фігури Лісажу, побудови фігури за цими точками та виведення параметрів
+    figureData.frequency(); //Виконання методу об'єкту figureData по оптимізації його даних
+    let figureDataString = ""; //Оголошуємо змінну для додавання та зберігання координат точок фігури під час роботи цієї функції
+    let oscillationTime = 0; //Оголошуємо змінну для зберігання поточного значення часу коливань.
+    for (let i = 1; i <= figureData.numberOfIterations(); i += 1) { //Цикл для розрахунку координат точок фігури
+        figureDataString += `${getСoordinatePoint(oscillationTime, figureData.frequencyX, figureData.phaseShiftX)},${getСoordinatePoint(oscillationTime, figureData.frequencyY, figureData.phaseShiftY)} `; //Розрахунок координати X та Y поточної точки та додавання їх до рядка з координатами точок фігури
+        oscillationTime += figureData.iterationStep(); //Збільшення часу коливань на один крок
     }
-    figuresContainerEl.removeChild(figuresContainerEl.firstElementChild)
-    makeAreaSvg(figureDataString,colorGeneration());
+    figuresContainerEl.removeChild(figuresContainerEl.firstElementChild); //Видалення контейнеру з попередньою фігурою
+    makeAreaSvg(figureDataString, datasetting.figureColor); //Створення контейнеру з новою фігурою по розрахованих данних
+    //Виведення параметрів побудованої фігури у відповідні елементи списку над нею на сторінці
     parameterListEl.firstElementChild.textContent =`wx = ${figureData.frequencyX} ;`;
     parameterListEl.firstElementChild.nextElementSibling.textContent =`wy = ${figureData.frequencyY} ;`;
     parameterListEl.lastElementChild.previousElementSibling.textContent =`ℽx; = ${figureData.phaseShiftX} ;`;
@@ -153,38 +153,130 @@ const calculateFigurePoints = () => { //Функція для побудови �
 }
 
 
-// calculateFigurePoints();
 
+/*------------ПОБУДОВА РАНДОМНОЇ ФІГУРИ (МЕТОД 1)-------------*/
 
-/*------------ПОБУДОВА ЗАДАНОЇ ФІГУРИ (МЕТОД 2)-------------*/
-
-
-/*------------------ВИБІР МЕТОДУ------------------*/
+/*------------ВИБІР ЕЛЕМЕНТІВ ФОРМИ----------------------*/
+const methodNameEl = document.querySelector('.js-method-description'); //Знаходимо елемент з назвою методу
 
 const chooseFirstMethodEl = document.querySelector('.choose-first-method'); //Знаходимо радіо-кнопку першого методу
 const chooseSecondMethodEl = document.querySelector('.choose-second-method'); //Знаходимо радіо-кнопку другого методу
-const firstMethodEl = document.querySelector('.form__method.first');
-const secondMethodEl = document.querySelector('.form__method.second');
-const buttonEl = document.querySelector('.form__button');
+const firstMethodEl = document.querySelector('.js-method-first'); //Знаходимо блок форми першого методу
+const secondMethodEl = document.querySelector('.js-method-second'); //Знаходимо блок форми другого методу
+const buttonFirstEl = document.querySelector('.js-button-first'); //Знаходимо кнопку побудови фігури першим методом
+const buttonSecondEl = document.querySelector('.js-button-second');  //Знаходимо кнопку побудови фігури другим методом
+//Слухачі на поля вводу параметрів фігури при побудові методом 2
+const frequencyXInputEl = document.querySelector('[data-name = frequency-x]'); //Знаходимо елемент поля вводу частоти по осі x
+const frequencyYInputEl = document.querySelector('[data-name = frequency-y]'); //Знаходимо елемент поля вводу частоти по осі y
+const phaseShiftXInputEl = document.querySelector('[data-name = phaseShift-x]'); //Знаходимо елемент поля вводу зсуву фаз по осі x
+const phaseShiftYInputEl = document.querySelector('[data-name = phaseShift-y]'); //Знаходимо елемент поля вводу зсуву фаз по осі y
+const figureColorInputEl = document.querySelector('[data-name = figure-color]'); //Знаходимо елемент поля вибору кольору
 
 
-const chooseFirstMethod = () => {
-    if (firstMethodEl.classList.contains('hidden')) {
+
+/*------------------ВИБІР ПЕРШОГО МЕТОДУ------------------*/
+const chooseFirstMethod = () => { //Функція для вибору методу 1
+    if (firstMethodEl.classList.contains('hidden')) { //Якщо на елементі формули налаштування першого методу є клас "hidden" видаляємо слухач кнопки другого методу для побудови фігури
+        buttonSecondEl.removeEventListener('click', buildingFigureMethodSecond); //Видаляємо слухач з кнопки другого методу для побудови фігури
+    }
+    
+    methodNameEl.textContent = 'Побудова випадкової фігури'; //Записуємо назву метода у відповідний елемент параграфа
+    if (firstMethodEl.classList.contains('hidden')) { //Якщо на елементі формули налаштування першого методу є клас "hidden" видаляємо наступні слухачі
+        frequencyXInputEl.removeEventListener('input', addDataToSessionStorage); //Видаляємо слухач на поле вводу частоти по осі x
+        frequencyYInputEl.removeEventListener('input', addDataToSessionStorage); //Видаляємо слухач на поле вводу частоти по осі y
+        phaseShiftXInputEl.removeEventListener('input', addDataToSessionStorage); //Видаляємо слухач на поле вводу зсуву фаз по осі x
+        phaseShiftYInputEl.removeEventListener('input', addDataToSessionStorage); //Видаляємо слухач на поле вводу зсуву фаз по осі y
+        figureColorInputEl.removeEventListener('input', addDataToSessionStorage); //Видаляємо слухач на поле вибору кольору
+        secondMethodEl.removeEventListener('click', checkDataFilling); //Додаємо слухач форму другого методу
+    }
+    
+
+    if (firstMethodEl.classList.contains('hidden')) { //Якщо блок форми першого методу приховано, робимо його явним
         firstMethodEl.classList.remove('hidden');
     }
     secondMethodEl.classList.add('hidden');
-    buttonEl.addEventListener('click', calculateFigurePoints);
+    buttonFirstEl.addEventListener('click', buildingFigureMethodFirst);
 }
-//Виконуємо цю функцію перший раз
-chooseFirstMethod();
 
-chooseFirstMethodEl.addEventListener('change', chooseFirstMethod);
+const buildingFigureMethodFirst = () => { //Функція для побудови фігури з параметрами обраними по методу 1
+    datasetting.figureColor = colorGeneration();
+    generateData(datasetting.figParamForRandom); //Виконання функції для вибору рандомних параметрів фігури
+    calculateFigurePoints();
+    console.log(figureData);
+}
+// generateData(datasetting.figParamForRandom);
+//Виконуємо цю функцію перший раз
+chooseFirstMethod(); //Перше виконання функції вибору методу 1 при старті
+
+chooseFirstMethodEl.addEventListener('change', chooseFirstMethod); //Додаємо слухач на кнопку першого методу для побудови фігури
+
+/*------------ПОБУДОВА ФІГУРИ ПО ПАРАМЕТРАМ ВВЕДЕНИМ ВРУЧНУ (МЕТОД 2)-------------*/
+/*------------------ВИБІР ДРУГОГО МЕТОДУ------------------*/
+
+
+const checkDataFilling = () => { //функція для перевірки введення повноти всіх даних
+    //Якщо всі дані є в sessionStorage (тобто кожне поле з параметром заповнене) то
+    if (sessionStorage.getItem('frequency-x') && sessionStorage.getItem('frequency-y') && sessionStorage.getItem('frequency-x') && sessionStorage.getItem('phaseShift-x') && sessionStorage.getItem('phaseShift-y') && sessionStorage.getItem('figure-color')) {
+        //Якщо кнопка для побудови фігури другим методом вимкнута, вмикаємо її
+        if (buttonSecondEl.hasAttribute('disabled')) {
+            buttonSecondEl.removeAttribute('disabled');
+        }
+    } else { //Якщо якесь із данних було видалено - вимикаємо кнопку для побудови фігури методом 2
+        buttonSecondEl.disabled = 'true';
+    }
+}
+
+function addDataToSessionStorage(element) { //Функція для додавання данних з поля вводу у відповідний запис sessionStorage для їх зберігання там
+    sessionStorage.setItem(element.srcElement.dataset.name, element.target.value);
+    checkDataFilling();
+}
 
 const chooseSecondMethod = () => {
-    if (secondMethodEl.classList.contains('hidden')) {
+    methodNameEl.textContent = 'Побудова заданої вручну фігури'; //Записуємо назву метода у відповідний елемент параграфа
+    buttonFirstEl.removeEventListener('click', buildingFigureMethodFirst); //Видаляємо слухач з кнопки першого методу для побудови фігури
+    
+    if (secondMethodEl.classList.contains('hidden')) { //Якщо на елементі формули налаштування другого методу є клас "hidden" видаляємо його
         secondMethodEl.classList.remove('hidden');
     }
-    firstMethodEl.classList.add('hidden');
+    firstMethodEl.classList.add('hidden'); // Додаємо клас "hidden" на елемент форми першого методу
+
+    frequencyXInputEl.value = sessionStorage.getItem('frequency-x'); //Повертаємо назад у поле вводу значення  частоти по осі x із SessionStorage
+    frequencyYInputEl.value = sessionStorage.getItem('frequency-y'); //Повертаємо назад у поле вводу значення частоти по осі y із SessionStorage
+    phaseShiftXInputEl.value = sessionStorage.getItem('phaseShift-x'); //Повертаємо назад у  поле вводу значення зсуву фаз по осі x із SessionStorage
+    phaseShiftYInputEl.value = sessionStorage.getItem('phaseShift-y'); //Повертаємо назад у поле вводу значення зсуву фаз по осі y із SessionStorage
+    figureColorInputEl.value = sessionStorage.getItem('figure-color'); //Повертаємо назад у поле вибору значення кольору із SessionStorage
+    if (sessionStorage.getItem('frequency-x') && sessionStorage.getItem('frequency-y') && sessionStorage.getItem('frequency-x') && sessionStorage.getItem('phaseShift-x') && sessionStorage.getItem('phaseShift-y') && sessionStorage.getItem('figure-color')) {
+        if (buttonSecondEl.hasAttribute('disabled')) {
+            buttonSecondEl.removeAttribute('disabled');
+        }
+    }
+
+    frequencyXInputEl.addEventListener('input', addDataToSessionStorage); //Додаємо слухач на поле вводу частоти по осі x для внесення даних в SessionStorage
+    frequencyYInputEl.addEventListener('input', addDataToSessionStorage); //Додаємо слухач на поле вводу частоти по осі y для внесення даних в SessionStorage
+    phaseShiftXInputEl.addEventListener('input', addDataToSessionStorage); //Додаємо слухач на поле вводу зсуву фаз по осі x для внесення даних в SessionStorage
+    phaseShiftYInputEl.addEventListener('input', addDataToSessionStorage); //Додаємо слухач на поле вводу зсуву фаз по осі y для внесення даних в SessionStorage
+    figureColorInputEl.addEventListener('input', addDataToSessionStorage); //Додаємо слухач на поле вибору кольору для внесення даних в SessionStorage
+
+    secondMethodEl.addEventListener('click', checkDataFilling); //Додаємо слухач форму другого методу для перевірки данних внесених в SessionStorage
+
+ 
+    buttonSecondEl.addEventListener('click', buildingFigureMethodSecond); //Додаємо слухач на кнопку другого методу для побудови фігури
+
 }
 
-chooseSecondMethodEl.addEventListener('change', chooseSecondMethod);
+const buildingFigureMethodSecond = () => { //Функція побудови фігури другим методом
+    //перенос параметрів фігури з sessionStorage в об'єкт для прийому та поточного зберігання параметрів фігури figureData
+    figureData.frequencyX = Number(sessionStorage.getItem('frequency-x'));
+    figureData.frequencyX = Number(sessionStorage.getItem('frequency-x'));
+    figureData.frequencyY = Number(sessionStorage.getItem('frequency-y'));
+    figureData.phaseShiftX = Number(sessionStorage.getItem('phaseShift-x'));
+    figureData.phaseShiftY = Number(sessionStorage.getItem('phaseShift-y'));
+    datasetting.figureColor = sessionStorage.getItem('figure-color');
+    // transferData(); //зчитуємо дані з SessionStorage та заносимо у відповідні поля об'єкту datasetting
+    calculateFigurePoints(); //Будуємо фігуру по перенесених даних, які до того були введені вручну та потрапили в sessionStorage
+}
+
+
+chooseSecondMethodEl.addEventListener('change', chooseSecondMethod); //
+
+/*------------ПОБУДОВА ЗАДАНОЇ ФІГУРИ (МЕТОД 2)-------------*/

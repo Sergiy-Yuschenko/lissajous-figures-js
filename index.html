@@ -20,33 +20,37 @@
                 <input type="radio" name="method" class="choose-second-method">
             </label>
         </div>
-        <p class="method-description">Побудова випадкової фігури</p>
-        <div class="form__method first">
+        <p class="method-description js-method-description"></p>
+        <div class="form__method js-method-first">
 
-            <button type="button" class="form__button">
+            <button type="button" class="form__button-first js-button-first">
                 побудувати фігуру
             </button>
         </div>
-        <div class="form__method second hidden" >
-            <p>1&#x29; введіть частоту коливань</p>
+        <div class="form__method js-method-second hidden" >
+            <p>1&#x29; введіть частоту коливань (1-200)</p>
             <label>
-                по осі X:
-                <input type="number" value="1" min="1" max="200">
+                X:
+                <input type="number"  min="1" max="200" data-name="frequency-x">
             </label>
             <label>
-                по осі Y:
-                <input type="number" value="1" min="1" max="200">
+                Y:
+                <input type="number" min="1" max="200" data-name="frequency-y">
             </label>
             <p>1&#x29; введіть зсув фаз (0-4.281)</p>
             <label>
-                по осі X:
-                <input type="number" value="1" min="1" max="200">
+                X:
+                <input type="number"  min="1" max="200" data-name="phaseShift-x">
             </label>
             <label>
-                по осі Y:
-                <input type="number" value="1" min="1" max="200">
+                Y:
+                <input type="number"  min="1" max="200" data-name="phaseShift-y">
             </label>
-            <button type="button" class="form__button">
+            <label>
+                Виберіть колір
+                <input type="color" data-name="figure-color">
+            </label>
+            <button type="button" class="form__button-second js-button-second" disabled>
                 побудувати фігуру
             </button>
         </div>
