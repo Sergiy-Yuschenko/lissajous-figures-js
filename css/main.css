@@ -4,7 +4,7 @@
 
 body {
   sans-serif;
-  background-color: #fafafa;
+  /* background-color: #cad3d3; */
   color: #212121;
   line-height: 1.5;
 }
@@ -33,6 +33,11 @@ p {
    margin: 0;
 }
 
+.wrapper {
+  width: 100%;
+  background-color: #e9f1f1;
+}
+
 .header {
   text-align: center;
 }
@@ -42,19 +47,22 @@ p {
     display: flex;
     flex-wrap: wrap;
     margin: 20px auto 0;
-    max-width: 400px;
+    padding: 0 5px;
+    /* max-width: 400px; */
+    width:100%;
+
 }
 
 .form__metod-choice {
   width: 100%;
-  padding: 0 50px;
+  padding: 5px 0 5px calc(30px + (100vw - 286px) / 2);
 }
 
 .form__method {
     background-color: burlywood;
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 100%;
 }
 
 .form__button {
@@ -62,7 +70,14 @@ p {
   margin: 15px auto;
 }
 
+/* . {
+  font-size: 17px;
+  margin:5px 0;
+} */
 
+.form__input-color {
+  margin-top: 4px;
+}
 /*Параметри фігури*/
 
 .figures-container {
@@ -75,14 +90,149 @@ p {
 
 .parameter-list {
   display: flex;
-  margin: 40px auto 20px;
-  width: 390px;
+  justify-content: space-evenly;
+  margin: 10px auto 20px;
+  /* width: 390px; */
 }
 
-.parameter-list__list-item:not(:last-child) {
-  margin-right: 35px;
+.parameter-list__list-item {
+  font-size:14px;
+}
+
+.form__сolour-entry-block {
+  display: flex;
+}
+
+.form__сolour-entry-block .form__paragraph {
+  margin-right: 10px;
 }
 
 .hidden {
   display: none;
 }
+
+@media screen and (max-width: 315px) {
+  .header {
+    font-size: 25px;
+  }
+  .form__metod-choice {
+    padding: 5px 0 5px calc(10px + (100vw - 230px) / 2);
+  }
+  .form__paragraph {
+    font-size: 14px;
+  }
+  .form {
+    margin: 5px auto 0;
+  }
+
+  .parameter-list {
+    position: relative;
+    margin: 0 auto 8px;
+    height: 39px;
+  }
+  .parameter-list__list-item {
+    position: absolute;
+  }
+  .parameter-list__list-item:nth-child(1) {
+    top: 3px;
+    left: 20px;
+  }
+  .parameter-list__list-item:nth-child(2) {
+    top: 19px;
+    left: 20px;
+  }
+  .parameter-list__list-item:nth-child(3) {
+    top: 3px;
+    left: 120px;
+  }
+  .parameter-list__list-item:nth-child(4) {
+    top: 19px;
+    left: 120px;
+  }
+}
+
+@media screen and (min-width: 484px) {
+  .form__metod-choice {
+    display: flex;
+    padding: 5px 30px;
+  }
+
+  .method-description.form__paragraph {
+    margin-left:auto;
+  }
+
+  .form__data-entry-block {
+    display: flex;
+  }
+  .form__label {
+    margin: 5px 0 0 10px;
+  }
+}
+
+@media screen and (min-width: 580px) {
+  .form__metod-choice {
+    padding: 5px 70px;
+  }
+
+  .form {
+    width: 580px
+  }
+
+  .parameter-list {
+    margin: 20px auto 20px;
+    width: 580px;
+  }
+
+  .parameter-list__list-item {
+    font-size:18px;
+  }
+}
+
+@media screen and (min-width: 830px) {
+  .form {
+    width: 830px
+  }
+  .form__method {
+    flex-direction: row;
+    padding-bottom: 6px;
+  }
+
+  .form__metod-choice {
+    padding: 5px 200px;
+  }
+
+  .form__data-entry-block {
+    display: block;
+    margin-left: 20px;
+  }
+
+  .form__сolour-entry-block {
+    margin-left: 20px;
+    display: block;
+  }
+
+  .form__button.second {
+    margin-left: 20px
+  }
+
+  .form__label.x {
+    margin-left: 30px;
+  }
+
+  .form__label-color {
+    margin-left: 20px;
+  }
+
+  .form__input-color {
+    margin-top: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .parameter-list {
+    margin: 40px auto 20px;
+  }
+}
+
+
+/*------------Для супер малих екранів мобільних*/

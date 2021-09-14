@@ -8,55 +8,63 @@
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <h1 class="header">Фігури Лісажю</h1>
-    <form class="form">
-        <div class="form__metod-choice">
-            <label class="form__method-choice" >
-                метод 1
-                <input type="radio" name="method" checked class="choose-first-method">
-            </label>
-            <label>
-                метод 2
-                <input type="radio" name="method" class="choose-second-method">
-            </label>
+    <div class="wrapper">
+        <h1 class="header">Фігури Лісажю</h1>
+        <form class="form">
+            <div class="form__metod-choice">
+                <label class="form__method-choice form__paragraph">
+                    метод 1
+                    <input type="radio" name="method" checked class="choose-first-method">
+                </label>
+                <label class="form__paragraph">
+                    метод 2
+                    <input type="radio" name="method" class="choose-second-method">
+                </label>
+                <p class="method-description form__paragraph js-method-description"></p>
+            </div>
+            <div class="form__method js-method-first">
+        
+                <button type="button" class="form__button js-button-first">
+                    побудувати фігуру
+                </button>
+            </div>
+            <div class="form__method js-method-second hidden">
+                <div class="form__data-entry-block">
+                    <p class="form__paragraph">1&#x29; введіть частоту коливань (1-200&#x29</p>
+                    <label class="form__label x">
+                        X:
+                        <input type="number" min="1" max="200" data-name="frequency-x">
+                    </label>
+                    <label class="form__label y">
+                        Y:
+                        <input type="number" min="1" max="200" data-name="frequency-y">
+                    </label>
+                </div>
+                <div class="form__data-entry-block">
+                    <p class="form__paragraph">2&#x29; введіть зсув фаз (0-4.281)</p>
+                    <label class="form__label x">
+                        X:
+                        <input type="number" min="1" max="200" data-name="phaseShift-x">
+                    </label>
+                    <label class="form__label y">
+                        Y:
+                        <input type="number" min="1" max="200" data-name="phaseShift-y">
+                    </label>
+                </div>
+                <div class="form__сolour-entry-block">
+                    <p class="form__paragraph">3&#x29; Виберіть колір</p>
+                    <label class="form__label-color">
+                        <input type="color" data-name="figure-color" class="form__input-color">
+                    </label>
+                </div>
+                <button type="button" class="form__button second js-button-second" disabled>
+                    побудувати фігуру
+                </button>
+            </div>
+        </form>
+        <ul class="parameter-list list"></ul>
+        <div class="figures-container">
         </div>
-        <p class="method-description js-method-description"></p>
-        <div class="form__method js-method-first">
-
-            <button type="button" class="form__button-first js-button-first">
-                побудувати фігуру
-            </button>
-        </div>
-        <div class="form__method js-method-second hidden" >
-            <p>1&#x29; введіть частоту коливань (1-200)</p>
-            <label>
-                X:
-                <input type="number"  min="1" max="200" data-name="frequency-x">
-            </label>
-            <label>
-                Y:
-                <input type="number" min="1" max="200" data-name="frequency-y">
-            </label>
-            <p>1&#x29; введіть зсув фаз (0-4.281)</p>
-            <label>
-                X:
-                <input type="number"  min="1" max="200" data-name="phaseShift-x">
-            </label>
-            <label>
-                Y:
-                <input type="number"  min="1" max="200" data-name="phaseShift-y">
-            </label>
-            <label>
-                Виберіть колір
-                <input type="color" data-name="figure-color">
-            </label>
-            <button type="button" class="form__button-second js-button-second" disabled>
-                побудувати фігуру
-            </button>
-        </div>
-    </form>
-    <ul class="parameter-list list"></ul>
-    <div class="figures-container">
     </div>
     <script src="js/figurebuilder.js" type="module"></script>
 </body>

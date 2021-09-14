@@ -148,7 +148,7 @@ const calculateFigurePoints = () => { //Функція для розрахунк
     //Виведення параметрів побудованої фігури у відповідні елементи списку над нею на сторінці
     parameterListEl.firstElementChild.textContent =`wx = ${figureData.frequencyX} ;`;
     parameterListEl.firstElementChild.nextElementSibling.textContent =`wy = ${figureData.frequencyY} ;`;
-    parameterListEl.lastElementChild.previousElementSibling.textContent =`ℽx; = ${figureData.phaseShiftX} ;`;
+    parameterListEl.lastElementChild.previousElementSibling.textContent =`ℽx = ${figureData.phaseShiftX} ;`;
     parameterListEl.lastElementChild.textContent =`ℽy; = ${figureData.phaseShiftY}`;
 }
 
