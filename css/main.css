@@ -36,7 +36,7 @@ p {
 .wrapper {
   padding-top: 10px;
   width: 100%;
-  background-color: #e9f1f1;
+  /* background-color: #e9f1f1; */
 }
 
 .header {
@@ -44,7 +44,11 @@ p {
 }
 
 .form {
-    background-color: aqua;
+    background-color: #e2f3e4;
+    border-style: solid;
+    border-color: #80a6ac;
+    border-radius:7px;
+    background-color: #93c1cd;
     display: flex;
     flex-wrap: wrap;
     margin: 10px auto 20px;
@@ -59,17 +63,40 @@ p {
   padding: 5px 0 5px calc(30px + (100vw - 286px) / 2);
 }
 
+.form__method-choice {
+  margin-right: 10px;
+}
+
 .form__method {
-    background-color: burlywood;
+    background-color: #e2f3e4;
+    border-style: solid;
+    border-color: #80a6ac;
+    border-radius:7px;
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
 .form__button {
+  outline: none;
+  background-color: #e9f2ef;
+  border-color: #80a6ac;
+  border-radius:4px;
   font-size: 15px;
-  max-width: 150px;
+  max-width: 130px;
   margin: 7px auto 9px;
+}
+
+.form__button:hover,
+.form__button:focus
+ {
+  border-color: #f3f0c3;
+  background-color: #80a6ac;
+  color: #ffffff;
+}
+
+.form__button:active {
+  background-color: #eb8b1e;
 }
 
 /* . {
