@@ -60,7 +60,25 @@ const datasetting = {
 
 //--------ВИЗНАЧЕННЯ ШИРИНИ ЕКРАНУ ТА ПОБУДОВА ПОЛЯ SVG ДЛЯ ФІГУРИ
 const figuresContainerEl = document.querySelector('.figures-container');
-let getAreaWidth = window.innerWidth * 0.5; //отримання розміру поля для фігури по ширині вьюпорта
+let defineAreaWidth = () => { //отримання розміру поля для фігури по ширині вьюпорта
+    if (innerWidth <= 315) {
+        return window.innerWidth * 0.8;
+    } else if (innerWidth > 315 && innerWidth <= 483) {
+        return window.innerWidth * 0.7;
+    } else if (innerWidth > 483 && innerWidth <= 580) {
+        return window.innerWidth * 0.6;
+    } else if (innerWidth > 580 && innerWidth <= 838) {
+        return window.innerWidth * 0.65;
+    }   else if (innerWidth > 838 && innerWidth <= 1200) {
+        return window.innerWidth * 0.5;
+    } else {
+        return window.innerWidth * 0.4;
+    }
+    
+};
+
+const getAreaWidth = defineAreaWidth();
+
 const makeAreaSvg = (data,colour) => { //Функція для побудови поля для фігури
     figuresContainerEl.insertAdjacentHTML('afterbegin', `<svg width="${getAreaWidth}" height="${getAreaWidth}" style="outline: 4px solid #000000;" class="figure"></svg>`);
     figuresContainerEl.firstElementChild.insertAdjacentHTML('afterbegin', `<polygon points="${data}" fill="transparent" stroke="${colour}" stroke-width="2" />`);

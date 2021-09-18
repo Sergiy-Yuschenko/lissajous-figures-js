@@ -51,7 +51,7 @@ p {
     background-color: #93c1cd;
     display: flex;
     flex-wrap: wrap;
-    margin: 10px auto 20px;
+    margin: 10px auto 0;
     padding: 0 5px 5px;
     /* max-width: 400px; */
     width:100%;
@@ -111,6 +111,7 @@ p {
 
 .figures-container {
     display: flex;
+    margin-bottom: 200px;
 }
 
 .figure {
@@ -264,7 +265,7 @@ p {
   }
 
   .parameter-list {
-    margin: 20px auto 20px;
+    margin: 15px auto 15px;
     width: 580px;
   }
 
@@ -318,13 +319,15 @@ p {
     margin-left: 15px;
     padding: 0;
   }
+
+
 }
 
-@media screen and (min-width: 1200px) {
+/* @media screen and (min-width: 1200px) {
   .parameter-list {
     margin: 40px auto 20px;
   }
-}
+} */
 
 
 /*------------Для супер малих екранів мобільних*/
